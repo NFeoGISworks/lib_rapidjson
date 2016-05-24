@@ -25,35 +25,37 @@
 # DEALINGS IN THE SOFTWARE.
 ################################################################################
 
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
-project(librapidjson NONE)
+function(check_version major minor rev)
 
-# some init settings
-set(CMAKE_COLOR_MAKEFILE ON)
-# set path to additional CMake modules
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+    file(READ ${CMAKE_CURRENT_SOURCE_DIR}/include/rapidjson/rapidjson.h VERSION_H_CONTENTS)
 
-include(GNUInstallDirs)
-set(INSTALL_INC_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE INTERNAL "Installation directory for headers" FORCE)
+    string(REGEX MATCH "RAPIDJSON_MAJOR_VERSION[ \t]+([0-9]+)"
+      MAJOR_VERSION ${VERSION_H_CONTENTS})
+    string (REGEX MATCH "([0-9]+)"
+      MAJOR_VERSION ${MAJOR_VERSION})
+    string(REGEX MATCH "RAPIDJSON_MINOR_VERSION[ \t]+([0-9]+)"
+      MINOR_VERSION ${VERSION_H_CONTENTS})
+    string (REGEX MATCH "([0-9]+)"
+      MINOR_VERSION ${MINOR_VERSION})
+    string(REGEX MATCH "RAPIDJSON_PATCH_VERSION[ \t]+([0-9]+)"
+      REV_VERSION ${VERSION_H_CONTENTS})
+    string (REGEX MATCH "([0-9]+)"
+      REV_VERSION ${REV_VERSION})
 
-include(util)
-check_version(RAPIDJSON_MAJOR_VERSION RAPIDJSON_MINOR_VERSION RAPIDJSON_REV_VERSION)
-set(VERSION ${RAPIDJSON_MAJOR_VERSION}.${RAPIDJSON_MINOR_VERSION}.${RAPIDJSON_REV_VERSION})
-report_version(${PROJECT_NAME} ${VERSION})
+    set(${major} ${MAJOR_VERSION} PARENT_SCOPE)
+    set(${minor} ${MINOR_VERSION} PARENT_SCOPE)
+    set(${rev} ${REV_VERSION} PARENT_SCOPE)
 
-configure_file(${CMAKE_MODULE_PATH}/cmake_uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY)
+endfunction(check_version)
 
-include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} )
-set(RAPIDJSON_INCL "${CMAKE_CURRENT_SOURCE_DIR}/include/rapidjson")
 
-export(TARGETS ${LIB_NAME} FILE ${LIB_NAME}-exports.cmake)
-add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+function(report_version name ver)
 
-if(NOT CYGWIN)
-    set_target_properties(${LIB_NAME} PROPERTIES VERSION ${VERSION})
-endif()
+    string(ASCII 27 Esc)
+    set(BoldYellow  "${Esc}[1;33m")
+    set(ColourReset "${Esc}[m")
 
-if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
-    install(DIRECTORY ${RAPIDJSON_INCL} DESTINATION "${INSTALL_INC_DIR}")
-endif()
+    message(STATUS "${BoldYellow}${name} version ${ver}${ColourReset}")
+
+endfunction()
