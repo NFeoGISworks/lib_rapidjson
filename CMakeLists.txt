@@ -36,6 +36,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 include(GNUInstallDirs)
 set(INSTALL_INC_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE INTERNAL "Installation directory for headers" FORCE)
+set(INSTALL_INC_FULL_DIR "${CMAKE_INSTALL_PREFIX}/${INSTALL_INC_DIR}")
 
 include(util)
 check_version(RAPIDJSON_MAJOR_VERSION RAPIDJSON_MINOR_VERSION RAPIDJSON_REV_VERSION)
@@ -44,16 +45,49 @@ report_version(${PROJECT_NAME} ${VERSION})
 
 configure_file(${CMAKE_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY)
 
-include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} )
-set(RAPIDJSON_INCL "${CMAKE_CURRENT_SOURCE_DIR}/include/rapidjson")
+set(PUBLIC_HEADER_DIR "${CMAKE_SOURCE_DIR}/include")
+
+set(PUBLIC_HDRS
+  rapidjson/allocators.h
+  rapidjson/document.h
+  rapidjson/encodedstream.h
+  rapidjson/encodings.h
+  rapidjson/filereadstream.h
+  rapidjson/filewritestream.h
+  rapidjson/memorybuffer.h
+  rapidjson/memorystream.h
+  rapidjson/prettywriter.h
+  rapidjson/rapidjson.h
+  rapidjson/reader.h
+  rapidjson/stringbuffer.h
+  rapidjson/writer.h
+
+  rapidjson/error/en.h
+  rapidjson/error/error.h
+
+  rapidjson/internal/biginteger.h
+  rapidjson/internal/diyfp.h
+  rapidjson/internal/dtoa.h
+  rapidjson/internal/ieee754.h
+  rapidjson/internal/itoa.h
+  rapidjson/internal/meta.h
+  rapidjson/internal/pow10.h
+  rapidjson/internal/stack.h
+  rapidjson/internal/strfunc.h
+  rapidjson/internal/strtod.h
+
+  rapidjson/msinttypes/inttypes.h
+  rapidjson/msinttypes/stdint.h
+)
 
 set(LIB_NAME ${PROJECT_NAME})
 add_library(${LIB_NAME} INTERFACE)
-target_include_directories(${LIB_NAME} INTERFACE ${RAPIDJSON_INCL})
+target_include_directories(${LIB_NAME} INTERFACE "${INSTALL_INC_FULL_DIR}")
+target_sources(${LIB_NAME} INTERFACE ${PUBLIC_HDRS})
 
 export(TARGETS ${LIB_NAME} FILE ${LIB_NAME}-exports.cmake)
 add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 
 if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
-    install(DIRECTORY ${RAPIDJSON_INCL} DESTINATION "${INSTALL_INC_DIR}")
+    install(DIRECTORY ${PUBLIC_HEADER_DIR}/ DESTINATION "${INSTALL_INC_DIR}")
 endif()
