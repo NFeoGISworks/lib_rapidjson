@@ -48,36 +48,36 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in ${CMAKE_CURREN
 set(PUBLIC_HEADER_DIR "${CMAKE_SOURCE_DIR}/include")
 
 set(PUBLIC_HDRS
-  rapidjson/allocators.h
-  rapidjson/document.h
-  rapidjson/encodedstream.h
-  rapidjson/encodings.h
-  rapidjson/filereadstream.h
-  rapidjson/filewritestream.h
-  rapidjson/memorybuffer.h
-  rapidjson/memorystream.h
-  rapidjson/prettywriter.h
-  rapidjson/rapidjson.h
-  rapidjson/reader.h
-  rapidjson/stringbuffer.h
-  rapidjson/writer.h
+    include/rapidjson/allocators.h
+    include/rapidjson/document.h
+    include/rapidjson/encodedstream.h
+    include/rapidjson/encodings.h
+    include/rapidjson/filereadstream.h
+    include/rapidjson/filewritestream.h
+    include/rapidjson/memorybuffer.h
+    include/rapidjson/memorystream.h
+    include/rapidjson/prettywriter.h
+    include/rapidjson/rapidjson.h
+    include/rapidjson/reader.h
+    include/rapidjson/stringbuffer.h
+    include/rapidjson/writer.h
 
-  rapidjson/error/en.h
-  rapidjson/error/error.h
+    include/rapidjson/error/en.h
+    include/rapidjson/error/error.h
 
-  rapidjson/internal/biginteger.h
-  rapidjson/internal/diyfp.h
-  rapidjson/internal/dtoa.h
-  rapidjson/internal/ieee754.h
-  rapidjson/internal/itoa.h
-  rapidjson/internal/meta.h
-  rapidjson/internal/pow10.h
-  rapidjson/internal/stack.h
-  rapidjson/internal/strfunc.h
-  rapidjson/internal/strtod.h
+    include/rapidjson/internal/biginteger.h
+    include/rapidjson/internal/diyfp.h
+    include/rapidjson/internal/dtoa.h
+    include/rapidjson/internal/ieee754.h
+    include/rapidjson/internal/itoa.h
+    include/rapidjson/internal/meta.h
+    include/rapidjson/internal/pow10.h
+    include/rapidjson/internal/stack.h
+    include/rapidjson/internal/strfunc.h
+    include/rapidjson/internal/strtod.h
 
-  rapidjson/msinttypes/inttypes.h
-  rapidjson/msinttypes/stdint.h
+    include/rapidjson/msinttypes/inttypes.h
+    include/rapidjson/msinttypes/stdint.h
 )
 
 set(LIB_NAME ${PROJECT_NAME})
